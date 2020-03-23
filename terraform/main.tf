@@ -1,11 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket = "berich-terraform-backend-state"
-    key    = "berich/terraformcloud/terraform.tfstate"
-    region = "eu-west-3"
-  }
-}
-
 resource "aws_dynamodb_table" "berich-dynamodb-table-fund" {
   name           = "Fund"
   #  billing_mode   = "PROVISIONED"
@@ -37,5 +29,16 @@ resource "aws_dynamodb_table" "berich-dynamodb-table-fund" {
   tags = {
     Name        = "berich-table-fund"
     Environment = "dev"
+  }
+}
+
+resource "aws_s3_bucket" "berich_fund_list_bucket" {
+  bucket = "fund-list"
+  acl    = "public-read"
+  #policy = "${file("policy.json")}"
+
+  website {
+    index_document = "index.html"
+    error_document = "error.html"
   }
 }
